@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,13 +19,14 @@ public class GameManager : MonoBehaviour
     public Button m_OkSettingsButton;
     public Button m_QuitButton;
     public Slider m_SoundSlider;
-
+    public AudioMixer masterMixer;
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
     private TankManager m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private TankManager m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+
 
 
     private void Start()
@@ -60,6 +62,10 @@ public class GameManager : MonoBehaviour
     private void SoundSettigs()
     {
         Debug.Log(m_SoundSlider.value);
+
+        masterMixer.SetFloat("MusicVolume", m_SoundSlider.value);
+        masterMixer.SetFloat("SFXVolume", 0 + m_SoundSlider.value);
+        masterMixer.SetFloat("DrivingVolume", -25 + m_SoundSlider.value);
     }
 
     private void QuitSettings()
