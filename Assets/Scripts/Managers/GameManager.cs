@@ -11,6 +11,13 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    public Canvas m_StartMenu;
+    public Canvas m_SettingsMenu;
+    public Button m_PlayButton;
+    public Button m_SettingsButton;
+    public Button m_OkSettingsButton;
+    public Button m_QuitButton;
+    public Slider m_SoundSlider;
 
 
     private int m_RoundNumber;                  // Which round the game is currently on.
@@ -22,6 +29,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        m_SettingsMenu.enabled = false;
+        m_PlayButton.onClick.AddListener(PlayGame);
+        m_SettingsButton.onClick.AddListener(SettingsMenu);
+        m_OkSettingsButton.onClick.AddListener(QuitSettings);
+        m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettigs(); });
+
+    }
+
+    private void PlayGame()
+    {
+        m_StartMenu.enabled = false;
+        m_PlayButton.enabled = false;
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
@@ -33,6 +52,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
+    private void SettingsMenu()
+    {
+        m_SettingsMenu.enabled = true;
+    }
+
+    private void SoundSettigs()
+    {
+        Debug.Log(m_SoundSlider.value);
+    }
+
+    private void QuitSettings()
+    {
+        m_SettingsMenu.enabled = false;
+    }
 
     private void SpawnAllTanks()
     {
