@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
     public GameObject m_Bot1Prefab;
-    public BotManager[] m_Bots;
+    public Bot1Manager[] m_Bots1;
+    public GameObject m_Bot2Prefab;
+    public Bot2Manager[] m_Bots2;
     public Canvas m_StartMenu;
     public Canvas m_SettingsMenu;
     public Button m_PlayButton;
@@ -24,7 +26,16 @@ public class GameManager : MonoBehaviour
     public AudioMixer masterMixer;
     public Canvas m_GamePlayMenu;
     public Button m_Bot1;
+    public Button m_Bot2;
+    public Dropdown m_MapDropDown;
+    public GameObject m_Map1Prefab;
+    public GameObject m_Map2Prefab;
 
+    private int m_PlayerNow;
+    private int m_Bot1Count;
+    private int m_Bot2Count;
+    private int m_MapNumber;
+    private GameObject m_MapInstance;
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
@@ -40,9 +51,14 @@ public class GameManager : MonoBehaviour
         m_PlayButton.onClick.AddListener(PlayGame);
         m_SettingsButton.onClick.AddListener(SettingsMenu);
         m_OkSettingsButton.onClick.AddListener(QuitSettings);
-        m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettigs(); });
-        m_Bot1.onClick.AddListener(SpawnAllBots);
-
+        m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettings(); });
+        m_MapDropDown.onValueChanged.AddListener(delegate { MapSettings(); });
+        m_Bot1.onClick.AddListener(SpawnBot1);
+        m_Bot2.onClick.AddListener(SpawnBot2);
+        m_MapNumber = 1;
+        m_Bot1Count = 0;
+        m_Bot2Count = 0;
+        m_MapInstance = Instantiate(m_Map1Prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
     }
 
     private void PlayGame()
@@ -54,8 +70,10 @@ public class GameManager : MonoBehaviour
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
+        m_PlayerNow = 2;
 
         SpawnAllTanks();
+        SpawnMap();
         //SpawnAllBots();
         SetCameraTargets();
 
@@ -68,18 +86,38 @@ public class GameManager : MonoBehaviour
         m_SettingsMenu.enabled = true;
     }
 
-    private void SoundSettigs()
+    private void SoundSettings()
     {
-        Debug.Log(m_SoundSlider.value);
-
         masterMixer.SetFloat("MusicVolume", m_SoundSlider.value);
         masterMixer.SetFloat("SFXVolume", 0 + m_SoundSlider.value);
         masterMixer.SetFloat("DrivingVolume", -25 + m_SoundSlider.value);
     }
 
+    private void MapSettings()
+    {
+        if(m_MapDropDown.value == 0)
+        {
+            m_MapNumber = 1;
+        }
+        else if (m_MapDropDown.value == 1)
+        {
+            m_MapNumber = 2;
+        }
+    }
+
     private void QuitSettings()
     {
         m_SettingsMenu.enabled = false;
+    }
+
+    private void SpawnMap()
+    {
+
+        if(m_MapNumber == 2)
+        {
+            m_MapInstance.SetActive(false);
+            m_MapInstance = Instantiate(m_Map2Prefab, new Vector3(0, 0, 0), Quaternion.identity);
+        }
     }
 
     private void SpawnAllTanks()
@@ -95,13 +133,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void SpawnAllBots()
+    private void SpawnBot1()
     {
-            // ... create them, set their player number and references needed for control.
-            m_Bots[0].m_Instance =
-                Instantiate(m_Bot1Prefab, m_Tanks[1].m_Instance.transform.position + new Vector3(1,0,2), m_Tanks[1].m_Instance.transform.rotation) as GameObject;
-            m_Bots[0].m_PlayerNumber = 1;
-            m_Bots[0].Setup();
+        // ... create them, set their player number and references needed for control.
+            m_Bots1[m_Bot1Count].m_Instance =
+                Instantiate(m_Bot1Prefab, m_Tanks[(m_PlayerNow)%2].m_Instance.transform.position + new Vector3(1,0,1), m_Tanks[(m_PlayerNow) % 2].m_Instance.transform.rotation) as GameObject;
+            m_Bots1[m_Bot1Count].m_PlayerNumber = m_PlayerNow;
+            m_Bots1[m_Bot1Count].m_TargetTank = m_Tanks[(m_PlayerNow) % 2].m_Instance;
+
+            m_Bots1[m_Bot1Count].Setup();
+
+            m_Bot1Count++;
+    }
+
+    private void SpawnBot2()
+    {
+        // ... create them, set their player number and references needed for control.
+        m_Bots2[m_Bot2Count].m_Instance =
+            Instantiate(m_Bot2Prefab, m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.position + new Vector3(4, 0, 0), m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.rotation) as GameObject;
+        m_Bots2[m_Bot2Count].m_PlayerNumber = m_PlayerNow;
+
+        m_Bots2[m_Bot2Count].Setup();
+
+        m_Bot2Count++;
     }
 
 
@@ -153,6 +207,7 @@ public class GameManager : MonoBehaviour
     {
         // As soon as the round starts reset the tanks and make sure they can't move.
         ResetAllTanks();
+        ResetAllBots();
         DisableTankControl();
 
         // Snap the camera's zoom and position to something appropriate for the reset tanks.
@@ -297,6 +352,23 @@ public class GameManager : MonoBehaviour
         {
             m_Tanks[i].Reset();
         }
+    }
+
+    private void ResetAllBots()
+    {
+        for (int i = 0; i < m_Bot1Count; i++)
+        {
+            m_Bots1[i].m_Instance.SetActive(false);
+            m_Bots1[i].m_Instance = null;
+        }
+        m_Bot1Count = 0;
+
+        for (int i = 0; i < m_Bot2Count; i++)
+        {
+            m_Bots2[i].m_Instance.SetActive(false);
+            m_Bots2[i].m_Instance = null;
+        }
+        m_Bot2Count = 0;
     }
 
 
