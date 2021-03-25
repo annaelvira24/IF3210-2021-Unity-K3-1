@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
     public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
     public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    public GameObject m_Bot1Prefab;
+    public BotManager[] m_Bots;
     public Canvas m_StartMenu;
     public Canvas m_SettingsMenu;
     public Button m_PlayButton;
@@ -20,6 +22,8 @@ public class GameManager : MonoBehaviour
     public Button m_QuitButton;
     public Slider m_SoundSlider;
     public AudioMixer masterMixer;
+    public Canvas m_GamePlayMenu;
+    public Button m_Bot1;
 
     private int m_RoundNumber;                  // Which round the game is currently on.
     private WaitForSeconds m_StartWait;         // Used to have a delay whilst the round starts.
@@ -32,10 +36,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         m_SettingsMenu.enabled = false;
+        m_GamePlayMenu.enabled = false;
         m_PlayButton.onClick.AddListener(PlayGame);
         m_SettingsButton.onClick.AddListener(SettingsMenu);
         m_OkSettingsButton.onClick.AddListener(QuitSettings);
         m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettigs(); });
+        m_Bot1.onClick.AddListener(SpawnAllBots);
 
     }
 
@@ -43,11 +49,14 @@ public class GameManager : MonoBehaviour
     {
         m_StartMenu.enabled = false;
         m_PlayButton.enabled = false;
+        m_GamePlayMenu.enabled = true;
+
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
 
         SpawnAllTanks();
+        //SpawnAllBots();
         SetCameraTargets();
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
@@ -84,6 +93,15 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
+    }
+
+    private void SpawnAllBots()
+    {
+            // ... create them, set their player number and references needed for control.
+            m_Bots[0].m_Instance =
+                Instantiate(m_Bot1Prefab, m_Tanks[1].m_Instance.transform.position + new Vector3(1,0,2), m_Tanks[1].m_Instance.transform.rotation) as GameObject;
+            m_Bots[0].m_PlayerNumber = 1;
+            m_Bots[0].Setup();
     }
 
 
