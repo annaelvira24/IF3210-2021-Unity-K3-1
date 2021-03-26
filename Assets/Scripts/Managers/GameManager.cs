@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
 
         SpawnAllTanks();
         SpawnMap();
-        //SpawnAllBots();
         SetCameraTargets();
 
         // Once the tanks have been created and the camera is using them as targets, start the game.

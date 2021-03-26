@@ -14,7 +14,8 @@ public class Bot1Movement : MonoBehaviour
     private float m_MovementInputValue;         // The current value of the movement input.
     private float m_TurnInputValue;             // The current value of the turn input.
     private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
-
+    private Vector3 m_RelativePosition;
+    [HideInInspector] public Animator m_anim;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class Bot1Movement : MonoBehaviour
     private void Start()
     {
         // The axes names are based on player number.
+        m_RelativePosition = new Vector3(0, 0, 0);
 
     }
 
@@ -50,7 +52,9 @@ public class Bot1Movement : MonoBehaviour
     private void Update()
     {
         // Store the value of both input axes.
+        //Move();
         Move();
+        Turn();
 
     }
 
@@ -58,8 +62,8 @@ public class Bot1Movement : MonoBehaviour
     private void FixedUpdate()
     {
         // Adjust the rigidbodies position and orientation in FixedUpdate.
-        Move();
-        Turn();
+//        Move();
+//        Turn();
     }
 
 
@@ -72,12 +76,15 @@ public class Bot1Movement : MonoBehaviour
  //       m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
         if(Mathf.Pow(Mathf.Pow(transform.position.z - m_TargetTank.transform.position.z, 2f) + Mathf.Pow(transform.position.x - m_TargetTank.transform.position.x, 2f), 0.5f) > 8f)
         {
-            m_Speed = 0.3f;
+//            m_anim.Play("Base Layer.BotMove");
+            m_Speed = 0.2f;
             m_Rigidbody.MovePosition(Vector3.MoveTowards(transform.position, m_TargetTank.transform.TransformPoint(new Vector3(0f, 0f, -5)), m_Speed));
+ 
         }
         else
         {
             m_Speed = 0;
+//            m_anim.Play("Base Layer.idle");
         }
 
     }
@@ -93,6 +100,25 @@ public class Bot1Movement : MonoBehaviour
 
         // Apply this rotation to the rigidbody's rotation.
         //m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
-        m_Rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, m_TargetTank.transform.rotation, m_TurnSpeed));
+
+        //Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+
+        Vector3 relativePos = m_TargetTank.transform.position-transform.position;
+        if((int)Mathf.Round(m_RelativePosition[2]) != (int)Mathf.Round(relativePos[2]))
+        {
+            m_anim.Play("Base Layer.BotTurn");
+            Debug.Log("lol");
+            Debug.Log((int)Mathf.Round(m_RelativePosition[2]));
+            Debug.Log((int)Mathf.Round(relativePos[2]));
+        }
+
+        //transform.rotation = Quaternion.LookRotation(m_TargetTank.transform.TransformPoint(new Vector3(0f, 0f, -5)));
+
+
+        m_Rigidbody.MoveRotation(Quaternion.LookRotation(relativePos));
+        m_RelativePosition = relativePos;
+
+
+        //m_Rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, m_TargetTank.transform.rotation, m_TurnSpeed));
     }
 }

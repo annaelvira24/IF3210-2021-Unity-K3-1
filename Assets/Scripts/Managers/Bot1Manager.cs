@@ -19,6 +19,8 @@ public class Bot1Manager
         m_Movement = m_Instance.GetComponent<Bot1Movement>();
         m_Shooting = m_Instance.GetComponent<BotShooting>();
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
+        m_Shooting.m_anim = m_Instance.GetComponent<Animator>();
+        m_Movement.m_anim = m_Instance.GetComponent<Animator>();
 
         m_Movement.m_PlayerNumber = m_PlayerNumber;
         m_Movement.m_TargetTank = m_TargetTank;

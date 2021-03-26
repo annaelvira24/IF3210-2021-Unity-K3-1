@@ -14,6 +14,7 @@ public class Bot2Movement : MonoBehaviour
     private float m_MovementInputValue;         // The current value of the movement input.
     private float m_TurnInputValue;             // The current value of the turn input.
     private float m_OriginalPitch;              // The pitch of the audio source at the start of the scene.
+    [HideInInspector] public Animator m_anim;
 
 
     private void Awake()
@@ -87,7 +88,10 @@ public class Bot2Movement : MonoBehaviour
             // Apply this movement to the rigidbody's position.
             m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
         }
-
+        if(m_MovementInputValue > 0)
+        {
+            m_anim.Play("Base Layer.BotMove");
+        }
 
     }
 
@@ -103,6 +107,14 @@ public class Bot2Movement : MonoBehaviour
         // Apply this rotation to the rigidbody's rotation.
         //m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
 
+
+        if (m_PlayerTank.transform.rotation.y - transform.rotation.y != 0)
+        {
+            m_anim.Play("Base Layer.BotTurn");
+        }
+
         m_Rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, m_PlayerTank.transform.rotation, m_TurnSpeed));
+
+
     }
 }

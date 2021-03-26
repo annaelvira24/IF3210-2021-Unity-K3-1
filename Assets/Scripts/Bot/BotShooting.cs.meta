@@ -3,7 +3,15 @@ guid: 57a177bd4752bde4c8fb5dcb773b950f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_Shell: {instanceID: 0}
+  - m_FireTransform: {instanceID: 0}
+  - m_AimSlider: {instanceID: 0}
+  - m_ShootingAudio: {instanceID: 0}
+  - m_ChargingClip: {instanceID: 0}
+  - m_FireClip: {instanceID: 0}
+  - m_BotShootAnimator: {fileID: 9100000, guid: 5d19b0df49fcb914f92dcefaf40d5b12,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
