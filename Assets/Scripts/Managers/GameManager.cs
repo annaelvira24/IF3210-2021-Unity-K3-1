@@ -23,10 +23,16 @@ public class GameManager : MonoBehaviour
     public Button m_OkSettingsButton;
     public Button m_QuitButton;
     public Slider m_SoundSlider;
+    public InputField m_InputPlayerName1;
+    public InputField m_InputPlayerName2;
+    public Text m_PlayerName1;
+    public Text m_PlayerName2;
     public AudioMixer masterMixer;
     public Canvas m_GamePlayMenu;
-    public Button m_Bot1;
-    public Button m_Bot2;
+    public Button m_Bot1_1;
+    public Button m_Bot2_1;
+    public Button m_Bot1_2;
+    public Button m_Bot2_2;
     public Dropdown m_MapDropDown;
     public GameObject m_Map1Prefab;
     public GameObject m_Map2Prefab;
@@ -53,16 +59,34 @@ public class GameManager : MonoBehaviour
         m_OkSettingsButton.onClick.AddListener(QuitSettings);
         m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettings(); });
         m_MapDropDown.onValueChanged.AddListener(delegate { MapSettings(); });
-        m_Bot1.onClick.AddListener(SpawnBot1);
-        m_Bot2.onClick.AddListener(SpawnBot2);
+        m_Bot1_1.onClick.AddListener(SpawnBot1Button1);
+        m_Bot2_1.onClick.AddListener(SpawnBot2Button1);
+        m_Bot1_2.onClick.AddListener(SpawnBot1Button2);
+        m_Bot2_2.onClick.AddListener(SpawnBot2Button2);
+
         m_MapNumber = 1;
         m_Bot1Count = 0;
         m_Bot2Count = 0;
         m_MapInstance = Instantiate(m_Map1Prefab, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+        m_SoundSlider.value = PlayerPrefs.GetFloat("soundVolume");
+        m_InputPlayerName1.text = PlayerPrefs.GetString("player1");
+        m_InputPlayerName2.text = PlayerPrefs.GetString("player2");
     }
 
     private void PlayGame()
     {
+        m_InputPlayerName1.DeactivateInputField();
+        m_InputPlayerName2.DeactivateInputField();
+        m_InputPlayerName1.enabled = false;
+        m_InputPlayerName2.enabled = false;
+        PlayerPrefs.SetString("player1", m_InputPlayerName1.text);
+        PlayerPrefs.SetString("player2", m_InputPlayerName2.text);
+        PlayerPrefs.SetFloat("soundVolume", m_SoundSlider.value);
+        PlayerPrefs.Save();
+
+        m_PlayerName1.text = PlayerPrefs.GetString("player1");
+        m_PlayerName2.text = PlayerPrefs.GetString("player2");
+
         m_StartMenu.enabled = false;
         m_PlayButton.enabled = false;
         m_GamePlayMenu.enabled = true;
@@ -70,7 +94,6 @@ public class GameManager : MonoBehaviour
         // Create the delays so they only have to be made once.
         m_StartWait = new WaitForSeconds(m_StartDelay);
         m_EndWait = new WaitForSeconds(m_EndDelay);
-        m_PlayerNow = 2;
 
         SpawnAllTanks();
         SpawnMap();
@@ -130,6 +153,30 @@ public class GameManager : MonoBehaviour
             m_Tanks[i].m_PlayerNumber = i + 1;
             m_Tanks[i].Setup();
         }
+    }
+
+    private void SpawnBot1Button1()
+    {
+        m_PlayerNow = 1;
+        SpawnBot1();
+    }
+
+    private void SpawnBot1Button2()
+    {
+        m_PlayerNow = 2;
+        SpawnBot1();
+    }
+
+    private void SpawnBot2Button1()
+    {
+        m_PlayerNow = 1;
+        SpawnBot2();
+    }
+
+    private void SpawnBot2Button2()
+    {
+        m_PlayerNow = 2;
+        SpawnBot2();
     }
 
     private void SpawnBot1()
