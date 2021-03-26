@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
     {
         // ... create them, set their player number and references needed for control.
             m_Bots1[m_Bot1Count].m_Instance =
-                Instantiate(m_Bot1Prefab, m_Tanks[(m_PlayerNow)%2].m_Instance.transform.position + new Vector3(1,0,1), m_Tanks[(m_PlayerNow) % 2].m_Instance.transform.rotation) as GameObject;
+                Instantiate(m_Bot1Prefab, m_Tanks[(m_PlayerNow)%2].m_Instance.transform.TransformPoint(new Vector3(0f,0f,-5)), m_Tanks[(m_PlayerNow) % 2].m_Instance.transform.rotation) as GameObject;
             m_Bots1[m_Bot1Count].m_PlayerNumber = m_PlayerNow;
             m_Bots1[m_Bot1Count].m_TargetTank = m_Tanks[(m_PlayerNow) % 2].m_Instance;
 
@@ -148,10 +148,30 @@ public class GameManager : MonoBehaviour
 
     private void SpawnBot2()
     {
-        // ... create them, set their player number and references needed for control.
+        int count = 0;
+        Vector3 botSpawn = new Vector3(0, 0, 0);
+        for (int i = 0; i<m_Bot2Count; i++)
+        {
+            if(m_Bots2[i].m_PlayerNumber == m_PlayerNow)
+            {
+                count++;
+            }
+        }
+
+        if (count % 2 == 0)
+        {
+            botSpawn = new Vector3(3, 0, 3);
+            m_Bots2[m_Bot2Count].m_BotNumber = 0;
+        }
+        else
+        {
+            botSpawn = new Vector3(-3, 0, 3);
+            m_Bots2[m_Bot2Count].m_BotNumber = 1;
+        }
         m_Bots2[m_Bot2Count].m_Instance =
-            Instantiate(m_Bot2Prefab, m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.position + new Vector3(4, 0, 0), m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.rotation) as GameObject;
+            Instantiate(m_Bot2Prefab, m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.transform.TransformPoint(botSpawn), m_Tanks[(m_PlayerNow - 1)].m_Instance.transform.rotation) as GameObject;
         m_Bots2[m_Bot2Count].m_PlayerNumber = m_PlayerNow;
+        m_Bots2[m_Bot2Count].m_PlayerTank = m_Tanks[(m_PlayerNow-1)].m_Instance;
 
         m_Bots2[m_Bot2Count].Setup();
 

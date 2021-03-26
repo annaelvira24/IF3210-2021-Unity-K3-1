@@ -6,7 +6,7 @@ public class Bot2Manager
 {       
     [HideInInspector] public int m_BotNumber;
     [HideInInspector] public int m_PlayerNumber;
-    [HideInInspector] public GameObject m_TargetTank;
+    [HideInInspector] public GameObject m_PlayerTank;
     [HideInInspector] public GameObject m_Instance;                        
 
     private Bot2Movement m_Movement;       
@@ -21,8 +21,9 @@ public class Bot2Manager
         m_CanvasGameObject = m_Instance.GetComponentInChildren<Canvas>().gameObject;
 
         m_Movement.m_PlayerNumber = m_PlayerNumber;
+        m_Movement.m_BotNumber = m_BotNumber;
+        m_Movement.m_PlayerTank = m_PlayerTank;
 
-        Debug.Log(m_PlayerNumber);
 
         MeshRenderer[] renderers = m_Instance.GetComponentsInChildren<MeshRenderer>();
 

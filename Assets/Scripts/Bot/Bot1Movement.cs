@@ -72,8 +72,8 @@ public class Bot1Movement : MonoBehaviour
  //       m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
         if(Mathf.Pow(Mathf.Pow(transform.position.z - m_TargetTank.transform.position.z, 2f) + Mathf.Pow(transform.position.x - m_TargetTank.transform.position.x, 2f), 0.5f) > 8f)
         {
-            m_Speed = 0.9f;
-            m_Rigidbody.MovePosition(Vector3.MoveTowards(transform.position, m_TargetTank.transform.position, m_Speed));
+            m_Speed = 0.3f;
+            m_Rigidbody.MovePosition(Vector3.MoveTowards(transform.position, m_TargetTank.transform.TransformPoint(new Vector3(0f, 0f, -5)), m_Speed));
         }
         else
         {
