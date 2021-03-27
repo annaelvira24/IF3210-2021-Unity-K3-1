@@ -7,16 +7,18 @@ public class TankShop : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
     public GameObject[] m_ShopLine;
+    public Color m_NormalItemColor;
     public Color m_SelectedItemColor;
     public Color m_OwnedItemColor;
     public Color m_CancelColor;
-    public bool m_ShopOpened;
+    [HideInInspector] public bool m_ShopOpened;
 
     private string m_ActionButton;
     private string m_FireButton;
     private int m_SelectedItem;
     private bool[] m_OwnedItem;
     private int[] m_ItemPrice;
+    private int m_CancelIndex = 4;
     void Start()
     {
         m_ActionButton = "Action" + m_PlayerNumber;
@@ -41,9 +43,9 @@ public class TankShop : MonoBehaviour
         // Scroll through shop items
         {
 
-            if (m_SelectedItem < 4)
+            if (m_SelectedItem < m_CancelIndex)
             {
-                m_ShopLine[m_SelectedItem].GetComponent<Text>().color = Color.white;
+                m_ShopLine[m_SelectedItem].GetComponent<Text>().color = m_NormalItemColor;
                 m_SelectedItem++;
             }
             else
@@ -58,7 +60,7 @@ public class TankShop : MonoBehaviour
         else if (m_ShopOpened && Input.GetButtonDown(m_FireButton))
         // Select shop item
         {
-            if (m_SelectedItem < 4)
+            if (m_SelectedItem < m_CancelIndex)
             {
                 if (m_OwnedItem[m_SelectedItem])
                 {
@@ -87,14 +89,14 @@ public class TankShop : MonoBehaviour
     {
         m_ShopLine[0].GetComponent<Text>().text = "- SWITCH WEAPON -";
         m_ShopLine[1].GetComponent<Text>().text = "NORMAL";
-        m_ShopLine[2].GetComponent<Text>().text = "HEAVY";
-        m_ShopLine[3].GetComponent<Text>().text = "WIDE";
+        m_ShopLine[2].GetComponent<Text>().text = "WIDE";
+        m_ShopLine[3].GetComponent<Text>().text = "HEAVY";
         m_ShopLine[4].GetComponent<Text>().text = "CANCEL";
 
         m_ShopLine[m_SelectedItem].GetComponent<Text>().text = "> " + m_ShopLine[m_SelectedItem].GetComponent<Text>().text;
         m_ShopLine[m_SelectedItem].GetComponent<Text>().color = m_SelectedItemColor;
 
-        for (int i = 1; i < 4; i++)
+        for (int i = 1; i < m_CancelIndex; i++)
         {
             if (m_OwnedItem[i])
             {

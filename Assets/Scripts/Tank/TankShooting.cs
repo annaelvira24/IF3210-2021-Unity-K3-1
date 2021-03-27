@@ -59,11 +59,7 @@ public class TankShooting : MonoBehaviour
             // Otherwise, if the fire button has just started being pressed...
             if (Input.GetButtonDown(m_FireButton))
             {
-                if (m_PauseShooting)
-                {
-                    m_PauseShooting = gameObject.GetComponent<TankShop>().m_ShopOpened;
-                }
-                else
+                if (!m_PauseShooting)
                 {
                     // ... reset the fired flag and reset the launch force.
                     m_Fired = false;
@@ -73,21 +69,43 @@ public class TankShooting : MonoBehaviour
                     m_ShootingAudio.clip = m_ChargingClip;
                     m_ShootingAudio.Play();
                 }
+                else
+                {
+                    m_PauseShooting = gameObject.GetComponent<TankShop>().m_ShopOpened;
+                }
+                
                 
             }
             // Otherwise, if the fire button is being held and the shell hasn't been launched yet...
             else if (Input.GetButton(m_FireButton) && !m_Fired)
             {
-                // Increment the launch force and update the slider.
-                m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
+                if (!m_PauseShooting)
+                {
+                    // Increment the launch force and update the slider.
+                    m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
 
-                m_AimSlider.value = m_CurrentLaunchForce;
+                    m_AimSlider.value = m_CurrentLaunchForce;   
+                }
+                else
+                {
+                    m_PauseShooting = gameObject.GetComponent<TankShop>().m_ShopOpened;
+                }
+                
             }
             // Otherwise, if the fire button is released and the shell hasn't been launched yet...
             else if (Input.GetButtonUp(m_FireButton) && !m_Fired)
             {
-                // ... launch the shell.
-                Fire();
+                if (m_PauseShooting)
+                {
+                    m_PauseShooting = gameObject.GetComponent<TankShop>().m_ShopOpened;
+                }
+                else
+                {
+                    // ... launch the shell.
+                    Fire();
+                }
+
+                
             }
         }
         else

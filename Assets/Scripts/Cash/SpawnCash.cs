@@ -22,10 +22,9 @@ public class SpawnCash : MonoBehaviour
     {
         while (cashCount < maxCashCount)
         {
-            xPos = Random.Range(-40, 41);
-            zPos = Random.Range(-40, 31);
+            xPos = Random.Range(-38, 39);
+            zPos = Random.Range(-38, 29);
             objectPooler.SpawnFromPool("cash", new Vector3(xPos, yPos, zPos), cashObject.transform.rotation);
-//            Instantiate(cashObject, new Vector3(xPos, yPos, zPos), cashObject.transform.rotation);
             yield return new WaitForSeconds(2f);
             cashCount += 1;
         }
