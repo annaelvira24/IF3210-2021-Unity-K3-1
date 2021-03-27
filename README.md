@@ -15,6 +15,7 @@ Terdapat `dua jenis desain map` yang dapat dipilih, yaitu `SnowLand` dan `Forest
 Object cash akan di-spawn di tempat random di seluruh peta secara periodik. Pemain dapat mengumpulkan object cash ketika object Tank collide dengan object cash tersebut. Jumlah dari cash yang dimiliki pemain diatur dalam sebuah script TankCash.cs
 
 4. Jenis senjata - spek e
+Terdapat 2 jenis senjata yang dapat dibeli dengan cash, yaitu senjata jenis wide seharga 5 cash dan senjata jenis heavy seharga 10 cash. Senjata jenis wide memberikan dampak explosion yang lebih luas dibanding senjata normal, sedangkan senjata jenis heavy memberikan damage lebih besar.
 
 5. Karakter bergerak (Bot) - spek f, g, h <br/>
 Terdapat `dua jenis karakter bergerak` yang dapat dibeli menggunakan cash. Kami mengimplementasikan karakter ini sebagai Bot1 dan Bot2 pada prefabs. Bot1 dapat dibeli dengan 6 cash dan berupa infantry yang bergerak mengikuti tank lawan dari belakang dan menembak secara periodik. Sedangkan bot2 dapat dibeli dengan 3 cash dan berperan sebagai NPC ally yang bergerak di samping depan pemain dan menembak secara periodik. Kedua jenis karakter ini juga memliki `animasi`. Ketika bergerak (berjalan), animasi karakter berupa pergerakan tanks ke kanan dan ke kiri (rotasi sumbu Y), ketika menembak animasi berupa rotasi sumbu X, sehingga bagian depan tank karakter bergerak naik ke atas, dan ketika berputar, bagian atas tank karakter (turret) berotasi terhadap sumbu Y. Animasi kami implementasikan menggunakan animation controller dengan masing-masing satu state untuk setiap animasi (berjalan, menembak, dan berputar) yang dipanggil ketika karakter melakukan aksi tersebut. Tanks dan karakter bergerak juga memiliki collision dan karakter bergerak bisa diserang menggunakan peluru pemain dan menghilang ketika healths nya sudah habis.
@@ -34,6 +35,35 @@ Libray yang digunakan merupakan library native yang telah disediakan oleh C# dan
 * UnityEngine.Audio : digunakan untuk mengubah volume suara.
 
 ### ScreenShot aplikasi
+#### Tampilan awal permainan<br/>
+![](Screenshot/01-TampilanAwal.PNG)
+
+#### Tampilan main menu settings<br/>
+![](Screenshot/02-MainMenuSettings.PNG)
+
+#### Pemilihan game mode<br/>
+![](Screenshot/03-MainMenuGameMode.PNG)
+
+#### Game Play untuk battle royal (main mode)<br/>
+![](Screenshot/04-MainMode1.PNG)<br/>
+![](Screenshot/05-MainMode2.PNG)<br/>
+Bot 1 (NPC ally)<br/>
+![](Screenshot/06-MainMode3.PNG)<br/>
+Bot 2 (Infantry)<br/>
+![](Screenshot/07-MainMode4.png)<br/>
+Membeli jenis senjata<br/>
+![](Screenshot/08-MainMode5.PNG)<br/>
+Senjata jenis heavy<br/>
+![](Screenshot/09-MainMode6.png)<br/>
+Senjata jenis wide<br/>
+![](Screenshot/10-MainMode7.png)<br/>
+
+#### Game Play untuk timed mode<br/>
+Dengan peta pertama (snowland) <br/>
+![](Screenshot/11-Timedmode1.PNG)<br/>
+Dengan peta kedua (forest)<br/>
+![](Screenshot/12-Timedmode2.PNG)<br/>
+
 
 ### Pembagian Kerja
 NIM | Nama | Pekerjaan |
