@@ -12,7 +12,8 @@ public class CashBehaviour : MonoBehaviour
 		{
 			collectSound.Play();
 			other.GetComponent<TankCash>().cashAmount += 1;
-			Destroy(gameObject);
+			// Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
 	}
 
