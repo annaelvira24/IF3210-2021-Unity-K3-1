@@ -17,11 +17,7 @@ Object cash akan di-spawn di tempat random di seluruh peta secara periodik. Pema
 4. Jenis senjata - spek e
 
 5. Karakter bergerak (Bot) - spek f, g, h <br/>
-Terdapat `dua jenis karakter bergerak` yang dapat dibeli menggunakan cash. Kami mengimplementasikan karakter ini sebagai Bot1 dan Bot2 pada prefabs. Bot1 dapat dibeli dengan 6 cash dan berupa infantry yang bergerak mengikuti tank lawan dari belakang dan menembak secara periodik. Sedangkan bot2 dapat dibeli dengan 3 cash dan berperan sebagai NPC ally yang bergerak di samping depan pemain dan menembak secara periodik. <br/>
-
-Kedua jenis karakter ini juga memliki `animasi`. Ketika bergerak (berjalan), animasi karakter berupa pergerakan tanks ke kanan dan ke kiri (rotasi sumbu Y), ketika menembak animasi berupa rotasi sumbu X, sehingga bagian depan tank karakter bergerak naik ke atas, dan ketika berputar, bagian atas tank karakter (turret) berotasi terhadap sumbu Y. Animasi kami implementasikan menggunakan animation controller dengan masing-masing satu state untuk setiap animasi (berjalan, menembak, dan berputar) yang dipanggil ketika karakter melakukan aksi tersebut. <br/>
-
-Tanks dan karakter bergerak juga memiliki collision dan karakter bergerak bisa diserang menggunakan peluru pemain dan menghilang ketika healths nya sudah habis.
+Terdapat `dua jenis karakter bergerak` yang dapat dibeli menggunakan cash. Kami mengimplementasikan karakter ini sebagai Bot1 dan Bot2 pada prefabs. Bot1 dapat dibeli dengan 6 cash dan berupa infantry yang bergerak mengikuti tank lawan dari belakang dan menembak secara periodik. Sedangkan bot2 dapat dibeli dengan 3 cash dan berperan sebagai NPC ally yang bergerak di samping depan pemain dan menembak secara periodik. Kedua jenis karakter ini juga memliki `animasi`. Ketika bergerak (berjalan), animasi karakter berupa pergerakan tanks ke kanan dan ke kiri (rotasi sumbu Y), ketika menembak animasi berupa rotasi sumbu X, sehingga bagian depan tank karakter bergerak naik ke atas, dan ketika berputar, bagian atas tank karakter (turret) berotasi terhadap sumbu Y. Animasi kami implementasikan menggunakan animation controller dengan masing-masing satu state untuk setiap animasi (berjalan, menembak, dan berputar) yang dipanggil ketika karakter melakukan aksi tersebut. Tanks dan karakter bergerak juga memiliki collision dan karakter bergerak bisa diserang menggunakan peluru pemain dan menghilang ketika healths nya sudah habis.
 
 6. Mode game - spek tambahan 2 <br/>
 Game mode lain yang diimplementasikan adalah timed mode. Kedua pemain harus mengumpulkan cash sebanyak mungkin dalam kurun waktu tertentu. Pemain dengan cash terbanyak akan menjadi pemenang.
@@ -43,5 +39,5 @@ Libray yang digunakan merupakan library native yang telah disediakan oleh C# dan
 NIM | Nama | Pekerjaan |
 --- | --- | --- |
 13518009 | Aufa Fadhlurohman | Game mode kedua (timed game) |
-13518045 | Anna Elvira Hartoyo | Main menu (setting nama player, sound, map) <br/> Dua jenis tampilan map <br/> Dua jenis karakter bergerak dan animasi karakter bergerak <br/> Objek Pooling |
+13518045 | Anna Elvira Hartoyo | Main menu (setting nama player, sound, map) <br/> Dua jenis tampilan map <br/> Dua jenis karakter bergerak dan animasi karakter bergerak <br/> Object Pooling |
 13518063 | Dhafin Rayhan Ahmad | Object cash <br/> Dua jenis senjata berbeda |
