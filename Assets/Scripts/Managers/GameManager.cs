@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public float m_TimeStart;
     public Text m_Countdown;
     public Canvas m_CountdownCanvas;
+    public GameObject m_CashSpawner;
 
     private int m_PlayerNow;
     private int m_Bot1Count;
@@ -121,6 +122,8 @@ public class GameManager : MonoBehaviour
         SpawnAllTanks();
         SpawnMap();
         SetCameraTargets();
+
+        m_CashSpawner.GetComponent<SpawnCash>().enableSpawning = true;
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
         StartCoroutine(GameLoop());
