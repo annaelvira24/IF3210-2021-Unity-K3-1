@@ -52,7 +52,7 @@ Bot 1 (NPC ally)<br/>
 Bot 2 (Infantry)<br/>
 ![](Screenshot/07-MainMode4.png)<br/>
 Membeli jenis senjata<br/>
-![](Screenshot/08-MainMode5.PNG)<br/>
+![](Screenshot/08-Mainmode5.PNG)<br/>
 Senjata jenis heavy<br/>
 ![](Screenshot/09-MainMode6.png)<br/>
 Senjata jenis wide<br/>
