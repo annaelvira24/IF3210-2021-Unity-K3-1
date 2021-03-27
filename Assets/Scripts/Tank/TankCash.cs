@@ -10,6 +10,11 @@ public class TankCash : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
+		UpdateCashInfo();
+	}
+
+	public void UpdateCashInfo()
+    {
 		cashText.GetComponent<Text>().text = ": " + cashAmount;
 	}
 
