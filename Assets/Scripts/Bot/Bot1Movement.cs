@@ -107,9 +107,6 @@ public class Bot1Movement : MonoBehaviour
         if((int)Mathf.Round(m_RelativePosition[2]) != (int)Mathf.Round(relativePos[2]))
         {
             m_anim.Play("Base Layer.BotTurn");
-            Debug.Log("lol");
-            Debug.Log((int)Mathf.Round(m_RelativePosition[2]));
-            Debug.Log((int)Mathf.Round(relativePos[2]));
         }
 
         //transform.rotation = Quaternion.LookRotation(m_TargetTank.transform.TransformPoint(new Vector3(0f, 0f, -5)));

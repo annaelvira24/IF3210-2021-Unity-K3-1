@@ -8,9 +8,12 @@ public class CashBehaviour : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-        collectSound.Play();
-        other.GetComponent<TankCash>().cashAmount += 1;
-		Destroy(gameObject);
+		if (other.GetComponent<TankCash>())
+		{
+			collectSound.Play();
+			other.GetComponent<TankCash>().cashAmount += 1;
+			Destroy(gameObject);
+		}
 	}
 
 }
