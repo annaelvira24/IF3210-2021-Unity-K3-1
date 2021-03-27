@@ -113,6 +113,8 @@ public class GameManager : MonoBehaviour
 
         m_StartMenu.enabled = false;
         m_PlayButton.enabled = false;
+        m_MainMode.enabled = false;
+        m_TimeMode.enabled = false;
         m_GamePlayMenu.enabled = true;
 
         // Create the delays so they only have to be made once.
@@ -133,6 +135,8 @@ public class GameManager : MonoBehaviour
     {
         m_GameMode = 2;
         m_CountdownCanvas.enabled = true;
+        m_MainMode.enabled = false;
+        m_TimeMode.enabled = false;
         SetCountdown(30);
         PlayGame();
         m_GamePlayMenu.enabled = false;
