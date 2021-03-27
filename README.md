@@ -14,7 +14,7 @@ Terdapat `dua jenis desain map` yang dapat dipilih, yaitu `SnowLand` dan `Forest
 3. Cash Object - spek d <br/>
 Object cash akan di-spawn di tempat random di seluruh peta secara periodik. Pemain dapat mengumpulkan object cash ketika object Tank collide dengan object cash tersebut. Jumlah dari cash yang dimiliki pemain diatur dalam sebuah script TankCash.cs
 
-4. Jenis senjata - spek e
+4. Jenis senjata - spek e <br/>
 Terdapat 2 jenis senjata yang dapat dibeli dengan cash, yaitu senjata jenis wide seharga 5 cash dan senjata jenis heavy seharga 10 cash. Senjata jenis wide memberikan dampak explosion yang lebih luas dibanding senjata normal, sedangkan senjata jenis heavy memberikan damage lebih besar.
 
 5. Karakter bergerak (Bot) - spek f, g, h <br/>
