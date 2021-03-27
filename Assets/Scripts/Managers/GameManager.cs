@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public Bot2Manager[] m_Bots2;
     public Canvas m_StartMenu;
     public Canvas m_SettingsMenu;
+    public Canvas m_ModeMenu;
+    public Button m_MainMode;
+    public Button m_TimeMode;
     public Button m_PlayButton;
     public Button m_SettingsButton;
     public Button m_OkSettingsButton;
@@ -36,6 +39,9 @@ public class GameManager : MonoBehaviour
     public Dropdown m_MapDropDown;
     public GameObject m_Map1Prefab;
     public GameObject m_Map2Prefab;
+    public int m_GameMode;
+    public float m_TimeStart;
+    public Text m_Countdown;
 
     private int m_PlayerNow;
     private int m_Bot1Count;
@@ -52,9 +58,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        m_GameMode = 1;
         m_SettingsMenu.enabled = false;
         m_GamePlayMenu.enabled = false;
-        m_PlayButton.onClick.AddListener(PlayGame);
+        m_ModeMenu.enabled = false;
+        m_PlayButton.onClick.AddListener(ModeMenu);
+        m_MainMode.onClick.AddListener(PlayGame);
+        m_TimeMode.onClick.AddListener(PlayGame2);
         m_SettingsButton.onClick.AddListener(SettingsMenu);
         m_OkSettingsButton.onClick.AddListener(QuitSettings);
         m_SoundSlider.onValueChanged.AddListener(delegate { SoundSettings(); });
@@ -72,6 +82,17 @@ public class GameManager : MonoBehaviour
         m_InputPlayerName1.text = PlayerPrefs.GetString("player1");
         m_InputPlayerName2.text = PlayerPrefs.GetString("player2");
     }
+
+    public void ModeMenu()
+    {
+        m_ModeMenu.enabled = true;
+    }
+
+    public void QuitModeMenu()
+    {
+        m_ModeMenu.enabled = false;
+    }
+
 
     private void PlayGame()
     {
@@ -101,6 +122,20 @@ public class GameManager : MonoBehaviour
 
         // Once the tanks have been created and the camera is using them as targets, start the game.
         StartCoroutine(GameLoop());
+    }
+
+    public void PlayGame2()
+    {
+        m_GameMode = 2;
+        SetCountdown(9);
+        PlayGame();
+        m_GamePlayMenu.enabled = false;
+    }
+
+    public void SetCountdown(int value)
+    {
+        m_TimeStart = value;
+        m_Countdown.text = m_TimeStart.ToString();
     }
 
     private void SettingsMenu()
@@ -257,27 +292,55 @@ public class GameManager : MonoBehaviour
     // This is called from start and will run each phase of the game one after another.
     private IEnumerator GameLoop()
     {
-        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundStarting());
-
-        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundPlaying());
-
-        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
-        yield return StartCoroutine(RoundEnding());
-
-        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (m_GameWinner != null)
+        if(m_GameMode == 1)
         {
-            // If there is a game winner, restart the level.
-            Application.LoadLevel(Application.loadedLevel);
+            // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundStarting());
+
+            // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundPlaying());
+
+            // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+            yield return StartCoroutine(RoundEnding());
+
+            // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+            if (m_GameWinner != null)
+            {
+                // If there is a game winner, restart the level.
+                Application.LoadLevel(Application.loadedLevel);
+            }
+            else
+            {
+                // If there isn't a winner yet, restart this coroutine so the loop continues.
+                // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+                StartCoroutine(GameLoop());
+            }
         }
         else
         {
-            // If there isn't a winner yet, restart this coroutine so the loop continues.
-            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
-            StartCoroutine(GameLoop());
+            // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundStarting2());
+
+            // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundPlaying2());
+
+            // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+            yield return StartCoroutine(RoundEnding2());
+
+            // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+            if (m_GameWinner != null)
+            {
+                // If there is a game winner, restart the level.
+                Application.LoadLevel(Application.loadedLevel);
+            }
+            else
+            {
+                // If there isn't a winner yet, restart this coroutine so the loop continues.
+                // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+                StartCoroutine(GameLoop());
+            }
         }
+
     }
 
 
@@ -343,6 +406,55 @@ public class GameManager : MonoBehaviour
         yield return m_EndWait;
     }
 
+    private IEnumerator RoundStarting2()
+    {
+        // As soon as the round starts reset the tanks and make sure they can't move.
+        DisableTankControl();
+
+        // Snap the camera's zoom and position to something appropriate for the reset tanks.
+        m_CameraControl.SetStartPositionAndSize();
+
+        // Increment the round number and display text showing the players what round it is.
+        m_RoundNumber++;
+        m_MessageText.text = "TimeMode";
+
+        // Wait for the specified length of time until yielding control back to the game loop.
+        yield return m_StartWait;
+    }
+
+
+    private IEnumerator RoundPlaying2()
+    {
+        // As soon as the round begins playing let the players control the tanks.
+        EnableTankControl();
+
+        // Clear the text from the screen.
+        m_MessageText.text = string.Empty;
+
+        // While there is not one tank left...
+        while (! (m_TimeStart <= 0))
+        {
+            // ... return on the next frame.
+            yield return null;
+        }
+    }
+
+
+    private IEnumerator RoundEnding2()
+    {
+        // Stop tanks from moving.
+        DisableTankControl();
+
+        // Now the winner's score has been incremented, see if someone has one the game.
+        m_GameWinner = GetGameWinner2();
+
+        // Get a message based on the scores and whether or not there is a game winner and display it.
+        string message = EndMessage();
+        m_MessageText.text = message;
+
+        // Wait for the specified length of time until yielding control back to the game loop.
+        yield return m_EndWait;
+    }
 
     // This is used to check if there is one or fewer tanks remaining and thus the round should end.
     private bool OneTankLeft()
@@ -393,6 +505,25 @@ public class GameManager : MonoBehaviour
 
         // If no tanks have enough rounds to win, return null.
         return null;
+    }
+
+    private TankManager GetGameWinner2()
+    {
+        int max = -1;
+        int id_max = -1;
+        // Go through all the tanks...
+        for (int i = 0; i < m_Tanks.Length; i++)
+        {
+            // ... and if one of them has enough rounds to win the game, return it.
+            if (m_Tanks[i].m_Instance.GetComponent<TankCash>().cashAmount > max)
+            {
+                id_max = i;
+                max = m_Tanks[i].m_Instance.GetComponent<TankCash>().cashAmount;
+            }
+        }
+
+        // If no tanks have enough rounds to win, return null.
+        return m_Tanks[id_max];
     }
 
 
@@ -464,6 +595,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < m_Tanks.Length; i++)
         {
             m_Tanks[i].DisableControl();
+        }
+    }
+
+    void Update()
+    {
+        if (m_GameMode == 2)
+        {
+            m_TimeStart -= Time.deltaTime;
+            m_Countdown.text = Mathf.Round(m_TimeStart).ToString();
         }
     }
 }
