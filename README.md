@@ -4,6 +4,14 @@ Tugas Besar 2 IF3210 Pengembangan Aplikasi pada Platform Khusus - Tanks: Extende
 ## Deskripsi Aplikasi
 Aplikasi ini adalah sebuah game 3D top-down dengan dua mode gameplay, yaitu tank battle royale (main game) dan tank timed game. Permainan ini adalah ekstensi dari <a href ='https://learn.unity.com/project/tanks-tutorial'>Tanks - Unity Learn</a> Game ini dapat dimainkan oleh 2 orang pemain. Pada mode gameplay tank battle rolaye (main game), permainan terdiri atas 5 ronde. Pada setiap ronde, pemain menyerang dengan cara menembakan peluru ke tank lawan sampai salah satu tank kehabisan health points. Selain itu terdapat pula cash yang dapat dikumpulkan oleh pemain yang dapat digunakan untuk membeli 2 jenis senjata lainnya dan 2 jenis bot yang dapat membantu pemain menyerang lawan. Pada timed game mode, pemain harus mengumpulkan cash sebanyak mungkin untuk memenangkan permainan.<br/><br/>
 
+Input Keys yang dapat digunakan:
+* W,A,S,D : untuk menggerakkan player 1 ke depan, kiri, belakang, dan kanan.
+* Up, Left, Down, Right arrow : untuk menggerakkan player 2 ke  depan, kiri, belakang, dan kanan.
+* R : untuk membuka toko senjata payer 1
+* L : untuk membuka toko senjata player 2
+* Spasi : untuk menembakkan peluru player 1
+* Enter : untuk menembakkan peluru player 2
+
 ## Cara Kerja
 1. Main menu - spek b <br/>
 sebelum pemain memasuki bagian gameplay, pemain dapat memilih `game mode` dan`jenis map`, mengisi `nama pemain`, dan mengatur `volume suara` menggunakan slider. Nama pemain dan volume suara disimpan dalam `PlayerPrefs`. Untuk mengatur volume suara, kami mengatur bagian sound mixer sesuai value dari input yang pengguna masukkan pada slider.
@@ -15,7 +23,7 @@ Terdapat `dua jenis desain map` yang dapat dipilih, yaitu `SnowLand` dan `Forest
 Object cash akan di-spawn di tempat random di seluruh peta secara periodik. Pemain dapat mengumpulkan object cash ketika object Tank collide dengan object cash tersebut. Jumlah dari cash yang dimiliki pemain diatur dalam sebuah script TankCash.cs
 
 4. Jenis senjata - spek e <br/>
-Terdapat 2 jenis senjata yang dapat dibeli dengan cash, yaitu senjata jenis wide seharga 5 cash dan senjata jenis heavy seharga 10 cash. Senjata jenis wide memberikan dampak explosion yang lebih luas dibanding senjata normal, sedangkan senjata jenis heavy memberikan damage lebih besar.
+Terdapat 2 jenis senjata yang dapat dibeli dengan cash, yaitu senjata jenis wide seharga 5 cash dan senjata jenis heavy seharga 10 cash. Senjata jenis wide memberikan dampak explosion yang lebih luas dibanding senjata normal, sedangkan senjata jenis heavy memberikan damage lebih besar. Untuk membuka toko senjata tersebut, pemain 1 menggunakan input key "R" dan pemain 2 menggunakan input key "L".
 
 5. Karakter bergerak (Bot) - spek f, g, h <br/>
 Terdapat `dua jenis karakter bergerak` yang dapat dibeli menggunakan cash. Kami mengimplementasikan karakter ini sebagai Bot1 dan Bot2 pada prefabs. Bot1 dapat dibeli dengan 6 cash dan berupa infantry yang bergerak mengikuti tank lawan dari belakang dan menembak secara periodik. Sedangkan bot2 dapat dibeli dengan 3 cash dan berperan sebagai NPC ally yang bergerak di samping depan pemain dan menembak secara periodik. Kedua jenis karakter ini juga memliki `animasi`. Ketika bergerak (berjalan), animasi karakter berupa pergerakan tanks ke kanan dan ke kiri (rotasi sumbu Y), ketika menembak animasi berupa rotasi sumbu X, sehingga bagian depan tank karakter bergerak naik ke atas, dan ketika berputar, bagian atas tank karakter (turret) berotasi terhadap sumbu Y. Animasi kami implementasikan menggunakan animation controller dengan masing-masing satu state untuk setiap animasi (berjalan, menembak, dan berputar) yang dipanggil ketika karakter melakukan aksi tersebut. Tanks dan karakter bergerak juga memiliki collision dan karakter bergerak bisa diserang menggunakan peluru pemain dan menghilang ketika healths nya sudah habis.
