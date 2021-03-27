@@ -21,10 +21,10 @@ Terdapat 2 jenis senjata yang dapat dibeli dengan cash, yaitu senjata jenis wide
 Terdapat `dua jenis karakter bergerak` yang dapat dibeli menggunakan cash. Kami mengimplementasikan karakter ini sebagai Bot1 dan Bot2 pada prefabs. Bot1 dapat dibeli dengan 6 cash dan berupa infantry yang bergerak mengikuti tank lawan dari belakang dan menembak secara periodik. Sedangkan bot2 dapat dibeli dengan 3 cash dan berperan sebagai NPC ally yang bergerak di samping depan pemain dan menembak secara periodik. Kedua jenis karakter ini juga memliki `animasi`. Ketika bergerak (berjalan), animasi karakter berupa pergerakan tanks ke kanan dan ke kiri (rotasi sumbu Y), ketika menembak animasi berupa rotasi sumbu X, sehingga bagian depan tank karakter bergerak naik ke atas, dan ketika berputar, bagian atas tank karakter (turret) berotasi terhadap sumbu Y. Animasi kami implementasikan menggunakan animation controller dengan masing-masing satu state untuk setiap animasi (berjalan, menembak, dan berputar) yang dipanggil ketika karakter melakukan aksi tersebut. Tanks dan karakter bergerak juga memiliki collision dan karakter bergerak bisa diserang menggunakan peluru pemain dan menghilang ketika healths nya sudah habis.
 
 6. Mode game - spek tambahan 2 <br/>
-Game mode lain yang diimplementasikan adalah timed mode. Kedua pemain harus mengumpulkan cash sebanyak mungkin dalam kurun waktu tertentu. Pemain dengan cash terbanyak akan menjadi pemenang.
+`Game mode lain` yang diimplementasikan adalah `timed mode`. Kedua pemain harus mengumpulkan cash sebanyak mungkin dalam kurun waktu tertentu. Pemain dengan cash terbanyak akan menjadi pemenang.
 
-7. Object Pooling - Spek tambahan 3 <rb/>
-Object Pooling kami implementasikan untuk object cash. Object ini memiliki Prefab yang disimpan sehingga dapat digunakan berulang-ulang dan tidak perlu melakukan instantiate dan destroy berulang-ulang.
+7. Object Pooling - Spek tambahan 3 <br/>
+`Object Pooling` kami implementasikan untuk object cash. Object ini memiliki Prefab yang disimpan sehingga dapat digunakan berulang-ulang dan tidak perlu melakukan instantiate dan destroy berulang-ulang.
 
 ### Assets yang digunakan
 * https://assetstore.unity.com/packages/3d/environments/landscapes/low-poly-simple-nature-pack-162153
