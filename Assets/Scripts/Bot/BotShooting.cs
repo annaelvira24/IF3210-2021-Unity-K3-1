@@ -29,12 +29,14 @@ public class BotShooting : MonoBehaviour
     private void Update()
     {
         // The slider should have a default value of the minimum launch force.
-        if (m_ShootTime% 100 == 0)
+        if (m_ShootTime% 400 == 0)
         {
             // ... launch the shell.
             m_anim.Play("Base Layer.BotShooting");
             Fire();
+            m_ShootTime = 0;
 //            m_anim.Play("Base Layer.idle");
+
         }
         m_ShootTime++;
     }
