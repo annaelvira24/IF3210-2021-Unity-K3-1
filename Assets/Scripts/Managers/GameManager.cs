@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public int m_GameMode;
     public float m_TimeStart;
     public Text m_Countdown;
+    public Canvas m_CountdownCanvas;
 
     private int m_PlayerNow;
     private int m_Bot1Count;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour
         m_SettingsMenu.enabled = false;
         m_GamePlayMenu.enabled = false;
         m_ModeMenu.enabled = false;
+        m_CountdownCanvas.enabled = false;
         m_PlayButton.onClick.AddListener(ModeMenu);
         m_MainMode.onClick.AddListener(PlayGame);
         m_TimeMode.onClick.AddListener(PlayGame2);
@@ -127,7 +129,8 @@ public class GameManager : MonoBehaviour
     public void PlayGame2()
     {
         m_GameMode = 2;
-        SetCountdown(9);
+        m_CountdownCanvas.enabled = true;
+        SetCountdown(30);
         PlayGame();
         m_GamePlayMenu.enabled = false;
     }
@@ -600,7 +603,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (m_GameMode == 2)
+        if (m_GameMode == 2 && m_TimeStart >= 0)
         {
             m_TimeStart -= Time.deltaTime;
             m_Countdown.text = Mathf.Round(m_TimeStart).ToString();
